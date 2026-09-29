@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -131,3 +132,4 @@ def benchmark() -> dict[str, Any]:
         "false_positive_rate": result.false_positive_rate,
         "categories": result.categories,
     }
+

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A2E Verifier</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="brand">
+        <div class="brand-mark">A2E</div>
+        <span>Verifier</span>
+    </div>
+
+    <nav>
+        <a href="#verify">Verify</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#benchmark">Benchmark</a>
+    </nav>
+
+    <div class="status">
+        <span class="status-dot"></span>
+        System Ready
+    </div>
+</header>
+
+<main>
+
+    <section class="hero">
+        <div class="hero-tag">AI AGENT SECURITY</div>
+
+        <h1>
+            Verify every action<br>
+            <span>before it executes.</span>
+        </h1>
+
+        <p>
+            Detect authorization drift between what an AI agent was
+            authorized to do and what it actually attempts to execute.
+        </p>
+
+        <div class="hero-flow">
+            <div>AUTHORIZATION</div>
+            <span>?</span>
+            <div>TRANSFORMATION</div>
+            <span>?</span>
+            <div>EXECUTION</div>
+        </div>
+    </section>
+
+    <section id="verify" class="workspace">
+
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">VERIFICATION ENGINE</span>
+                <h2>Compare actions</h2>
+            </div>
+            <span class="live-badge">LIVE VERIFICATION</span>
+        </div>
+
+        <div class="action-grid">
+
+            <section class="action-card">
+                <div class="card-header">
+                    <div>
+                        <span class="card-number">01</span>
+                        <h3>Authorized Action</h3>
+                    </div>
+                    <span class="card-label">SOURCE</span>
+                </div>
+
+                <label>Tool</label>
+                <input id="authorized-tool" value="ticket_api">
+
+                <label>Operation</label>
+                <input id="authorized-operation" value="read">
+
+                <label>Resource</label>
+                <input id="authorized-resource" value="ticket:1001">
+
+                <label>Actor</label>
+                <input id="authorized-actor" value="agent-1">
+
+                <label>Parameters</label>
+                <textarea id="authorized-parameters">{}</textarea>
+
+                <label>Context</label>
+                <textarea id="authorized-context">{}</textarea>
+            </section>
+
+            <div class="comparison-arrow">
+                <div class="arrow-line"></div>
+                <div class="arrow-circle">?</div>
+                <div class="arrow-line"></div>
+            </div>
+
+            <section class="action-card">
+                <div class="card-header">
+                    <div>
+                        <span class="card-number">02</span>
+                        <h3>Executed Action</h3>
+                    </div>
+                    <span class="card-label">TARGET</span>
+                </div>
+
+                <label>Tool</label>
+                <input id="executed-tool" value="ticket_api">
+
+                <label>Operation</label>
+                <input id="executed-operation" value="read">
+
+                <label>Resource</label>
+                <input id="executed-resource" value="ticket:1001">
+
+                <label>Actor</label>
+                <input id="executed-actor" value="agent-1">
+
+                <label>Parameters</label>
+                <textarea id="executed-parameters">{}</textarea>
+
+                <label>Context</label>
+                <textarea id="executed-context">{}</textarea>
+            </section>
+
+        </div>
+
+        <button id="verify-button" class="verify-button">
+            <span>Run Verification</span>
+            <span>?</span>
+        </button>
+
+        <section id="result" class="result-panel hidden">
+
+            <div class="result-top">
+                <div>
+                    <span class="eyebrow">VERIFICATION RESULT</span>
+                    <h2 id="verdict">—</h2>
+                </div>
+
+                <div class="category-box">
+                    <span>CATEGORY</span>
+                    <strong id="category">—</strong>
+                </div>
+            </div>
+
+            <div class="result-grid">
+
+                <div class="result-section">
+                    <h3>Evidence</h3>
+                    <ul id="evidence"></ul>
+                </div>
+
+                <div class="result-section">
+                    <h3>Recommended Remediation</h3>
+                    <ul id="remediation"></ul>
+                </div>
+
+            </div>
+
+            <details class="raw-response">
+                <summary>View raw verification response</summary>
+                <pre id="details"></pre>
+            </details>
+
+        </section>
+    </section>
+
+    <section id="how-it-works" class="info-section">
+
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">HOW IT WORKS</span>
+                <h2>Authorization should survive the entire execution path.</h2>
+            </div>
+        </div>
+
+        <div class="feature-grid">
+
+            <div class="feature">
+                <span>01</span>
+                <h3>Authorize</h3>
+                <p>
+                    Capture the exact tool, operation, resource, parameters,
+                    actor and context that were approved.
+                </p>
+            </div>
+
+            <div class="feature">
+                <span>02</span>
+                <h3>Track</h3>
+                <p>
+                    Preserve the action across transformations,
+                    reconstruction and delegation.
+                </p>
+            </div>
+
+            <div class="feature">
+                <span>03</span>
+                <h3>Verify</h3>
+                <p>
+                    Detect drift before the resulting action is allowed
+                    to execute.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="benchmark" class="benchmark-section">
+
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">LOCAL SECURITY BENCHMARK</span>
+                <h2>Verification coverage</h2>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat">
+                <strong>15</strong>
+                <span>Total cases</span>
+            </div>
+
+            <div class="stat">
+                <strong>12</strong>
+                <span>Attack cases</span>
+            </div>
+
+            <div class="stat">
+                <strong>3</strong>
+                <span>Benign cases</span>
+            </div>
+
+            <div class="stat">
+                <strong>0</strong>
+                <span>False positives</span>
+            </div>
+        </div>
+
+        <p class="benchmark-note">
+            Simulated local benchmark. Results are intended for demonstration
+            and regression testing, not as evidence of real-world effectiveness.
+        </p>
+
+    </section>
+
+</main>
+
+<footer>
+    <span>A2E VERIFIER</span>
+    <span>Authorization-to-Execution Integrity Verification</span>
+</footer>
+
+<script src="/static/app.js"></script>
+
+</body>
+</html>

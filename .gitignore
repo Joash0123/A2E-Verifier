@@ -19,3 +19,12 @@ env/
 *.log
 .DS_Store
 Thumbs.db
+
+# Local / generated files
+.venv/
+venv/
+env/
+frontend/node_modules/
+node_modules/
+creative-temp/
+web_backup_20260928_144512/
