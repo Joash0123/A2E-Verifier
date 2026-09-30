@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from a2e_verifier.action import Action
+from a2e_verifier.ai_investigator import ai_investigate
 from a2e_verifier.benchmark_registry import all_benchmark_cases
 from a2e_verifier.investigation import investigate
 from a2e_verifier.registry_benchmark import run_registry_benchmark
@@ -50,6 +51,7 @@ class VerificationResponse(BaseModel):
     authorized: dict[str, Any]
     executed: dict[str, Any]
     investigation: dict[str, Any]
+    ai_investigation: str | None = None
 
 
 @app.get("/")
@@ -62,7 +64,11 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.post("/verify", response_model=VerificationResponse)
+@app.post(
+    "/verify",
+    response_model=VerificationResponse,
+    response_model_exclude_none=True,
+)
 def verify_action(
     authorized: ActionRequest,
     executed: ActionRequest,
@@ -81,17 +87,33 @@ def verify_action(
         result,
     )
 
+    investigation_data = {
+        "summary": investigation.summary,
+        "category": investigation.category,
+        "evidence": investigation.evidence,
+        "remediation": investigation.remediation,
+    }
+
+    ai_analysis = None
+
+    if not result.allowed:
+        ai_analysis = ai_investigate(
+            authorized=authorized_action.canonical(),
+            executed=executed_action.canonical(),
+            verification={
+                "allowed": result.allowed,
+                "verdict": result.verdict.value,
+            },
+            investigation=investigation_data,
+        )
+
     return VerificationResponse(
         allowed=result.allowed,
         verdict=result.verdict.value,
         authorized=authorized_action.canonical(),
         executed=executed_action.canonical(),
-        investigation={
-            "summary": investigation.summary,
-            "category": investigation.category,
-            "evidence": investigation.evidence,
-            "remediation": investigation.remediation,
-        },
+        investigation=investigation_data,
+        ai_investigation=ai_analysis,
     )
 
 
@@ -132,4 +154,3 @@ def benchmark() -> dict[str, Any]:
         "false_positive_rate": result.false_positive_rate,
         "categories": result.categories,
     }
-

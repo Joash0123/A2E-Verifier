@@ -67,6 +67,19 @@ async function verifyAction() {
             remediation.appendChild(li);
         });
 
+        const aiPanel = document.getElementById("ai-investigation");
+
+        if (aiPanel) {
+            if (data.ai_investigation) {
+                aiPanel.textContent = data.ai_investigation;
+                aiPanel.classList.remove("hidden");
+            } else {
+                aiPanel.textContent =
+                    "AI investigation unavailable. Set GROQ_API_KEY to enable AI analysis.";
+                aiPanel.classList.remove("hidden");
+            }
+        }
+
         document.getElementById("details").textContent =
             JSON.stringify(data, null, 2);
 
@@ -83,6 +96,12 @@ async function verifyAction() {
 
         document.getElementById("remediation").innerHTML =
             "<li>Correct the input and try again.</li>";
+
+        const aiPanel = document.getElementById("ai-investigation");
+        if (aiPanel) {
+            aiPanel.textContent = "";
+            aiPanel.classList.add("hidden");
+        }
 
         document.getElementById("details").textContent = "";
     }
